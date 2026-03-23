@@ -1,0 +1,29 @@
+name: Autonomous LinkedIn Agent
+
+on:
+  schedule:
+    - cron: '0 0 */2 * *' # Runs at midnight every 2 days
+  workflow_dispatch: # Provides a 1-click manual trigger button in the UI
+
+jobs:
+  run-agent:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+          
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+        
+      - name: Configure Secure Environment
+        run: |
+          echo "GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}" > .env
+          echo "EMAIL_SENDER=${{ secrets.EMAIL_SENDER }}" >> .env
+          echo "EMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD }}" >> .env
+          echo "EMAIL_RECEIVER=${{ secrets.EMAIL_RECEIVER }}" >> .env
+          
+      - name: Ignite Local Database & Pipeline
+        run: python main.py
