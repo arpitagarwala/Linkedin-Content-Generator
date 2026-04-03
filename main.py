@@ -64,13 +64,13 @@ def run_pipeline():
         update_run_stats(run_id, len(raw_articles), len(novel_articles), len(high_signal_articles), "FAILED_QC_REJECTED")
 
 if __name__ == "__main__":
-    print("Agent Scheduler Activated: Running the pipeline once every 2 days...")
+    print("Agent Scheduler Activated: Running the pipeline once every 3 days...")
     
     # Run once immediately on startup
     run_pipeline()
     
-    # Schedule every 2 days
-    schedule.every(2).days.do(run_pipeline)
+    # Schedule every 3 days
+    schedule.every(3).days.do(run_pipeline)
     
     while True:
         schedule.run_pending()

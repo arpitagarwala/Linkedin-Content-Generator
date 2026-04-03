@@ -16,7 +16,7 @@ class InsightFilter:
         # We will prepare a block of text
         articles_text = ""
         for idx, art in enumerate(articles):
-            articles_text += f"\n[ID: {idx}] Title: {art['title']}\nSummary: {art['summary']}\n---"
+            articles_text += f"\n[ID: {idx}] Date: {art.get('published', 'Unknown')}\nTitle: {art['title']}\nSummary: {art['summary']}\n---"
             
         prompt = f"""
         You are a senior finance content strategist for a LinkedIn channel targeting GenZ, Chartered Accountants (CAs), and finance students.
@@ -24,11 +24,12 @@ class InsightFilter:
         Evaluate the following list of news articles and pick the TOP 5 most relevant articles for our audience.
         
         Scoring Criteria (0-10 for each, total 30):
-        1. Relevance: Impact on CAs, GenZ, or personal finance.
-        2. Novelty: Is it a new perspective or structural change?
+        1. Relevance: Impact on CAs, GenZ, or personal finance. Focus on top and latest changes by the government (e.g., new income tax act) or major gamechangers by big companies.
+        2. Novelty & Freshness: Is it a new perspective or a RECENT structural change? Completely reject any historical news (e.g., GST rollout from 2017).
         3. Audience Value: Actionability and shareability factor.
         
         CRITICAL NEGATIVE FILTERS (Instantly score 0 if true):
+        - STRICTLY AVOID old, outdated news, and historical reforms like the 2017 GST rollout. Only accept late-breaking recent news.
         - STRICTLY AVOID any articles about daily Gold/Silver prices, crude oil variations, or commodities.
         - STRICTLY AVOID any day-trading, pure speculation, or generic stock price movements.
         
